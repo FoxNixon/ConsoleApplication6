@@ -1,28 +1,35 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 
 using namespace std;
+
 
 int requestArrSize(size_t* num);
 void printArray(int* array, size_t arrSize);
 void printSquareArray(int** array, size_t arrSize);
 void createFile(string* fileName);
 void printArrayToFile(int* array, size_t arrSize, string fileName);
-
+void writeFileToFile(string inputFile, string outputFile);
+void findWordInFile(string fileName, string targetWord, bool * isFound);
 void Task1();
 void Task2();
 void Task3();
 void Task4();
+void Task5();
 
-string filename1, filename2;
+string filename1, filename2, filename3;
 
-int main()
-{
+int main(){
+
     //Task1();
     //Task2();
     //Task3();
+    //Task4();
+    Task5();
 
+    return 0;
 }
 
 
@@ -67,8 +74,8 @@ void createFile(string* fileName) {
     *fileName = filename;
 }
 
-void printArrayToFile (int* array, size_t arrSize, string fileName) {
-    
+void printArrayToFile(int* array, size_t arrSize, string fileName) {
+
     ofstream fout;
     string filename = fileName;
     fout.open(filename);
@@ -76,7 +83,58 @@ void printArrayToFile (int* array, size_t arrSize, string fileName) {
         fout << array[i] << " ";
     }
     fout.close();
-    
+
+}
+
+void writeFileToFile(string inputFile, string outputFile) {
+
+    ifstream fin(inputFile);
+    ofstream fout(outputFile, ios_base::app);
+
+    if (fin.is_open() && fout.is_open()) {
+
+        /*const size_t buffSize = 255;
+        char buffer[buffSize] = {0};*/
+        string buffer;
+
+        while (!fin.eof()) {
+            //fin.getline(buffer, buffSize);
+            ////fout.end;
+            //fout.write(buffer, buffSize);
+            getline(fin, buffer);
+            fout << buffer;
+
+        }
+        fin.close();
+        fout.close();
+    }
+    else if (!fin.is_open()) {
+        cout << "Can't open file " << inputFile << endl;
+    }
+    else {
+        cout << "Can't open file " << outputFile << endl;
+    }
+}
+
+void findWordInFile(string fileName, string targetWord, bool* isFound) {
+    ifstream fin(fileName);
+
+    if (fin.is_open()) {
+
+        string str;
+        while (!fin.eof()) {
+            getline(fin, str);
+            if (str.find(targetWord) != string::npos){
+                *isFound = true;
+            }
+            else {
+                *isFound = false;
+            }
+        }
+    }
+    else {
+        cout << "Can't open file!"
+    }
 }
 
 void Task1() {
@@ -130,6 +188,22 @@ void Task3() {
 }
 
 void Task4() {
-    ifstream fin;
-    
+    filename1 = "1.txt";
+    filename2 = "2.txt";
+    createFile(&filename3);
+    writeFileToFile(filename1, filename3);
+    writeFileToFile(filename2, filename3);
+}
+
+void Task5() {
+    string fileName, targetWord, result;
+    bool bFlag = false;
+    cout << "5.Enter the filename to check" << endl;
+    cin >> fileName;
+    cout << "Enter the text to search" << endl;
+    cin >> targetWord;
+    findWordInFile( fileName, targetWord, &bFlag);
+    result = (bFlag == true) ? " is found " : " is not found ";
+
+    cout << "Target text " << targetWord << result << "in the file " << fileName << endl;
 }
