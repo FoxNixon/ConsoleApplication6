@@ -43,7 +43,7 @@ int requestArrSize(size_t* num) {
     return 0;
 }
 
-void printArray(int* array, size_t arrSize) {
+void printArray(const int* array, const size_t arrSize) {
 
     cout << "Array is: ";
     for (size_t i = 0; i < arrSize; i++) {
@@ -167,6 +167,7 @@ void Task2() {
         }
     }
     printSquareArray(array2, ARRAY2_SIZE);
+    delete(array2);
 }
 
 void Task3() {
